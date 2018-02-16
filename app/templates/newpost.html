@@ -90,7 +90,7 @@
 
     <h1> Add New Post </h1><hr>
     <form action="" Method="post">
-
+      {{ form.hidden_tag() }}
     <p>
         {{ form.title.label }}
         {{ form.title(size=50) }}

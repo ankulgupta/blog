@@ -1,15 +1,15 @@
-from app import db
 
-class Post(db.Model):
-	__tablename__='posts'
-	id=db.Column(db.Integer, primary_key=true)
-	title=db.Column(String(250))
-	category=dm.Column(String(250))
-	content=db.Column(String(65535))
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 
-	def __repr__(self):
-		return '{}: \n{}\n\t -Ankul'.format(self.title, self.content)
 
 engine=create_engine('sqlite:///blog_post.db')
+db_session=scoped_session(sessionmaker(autocommit=False,autoflush=False,bind=engine))
 
-Base.metadata.create_all(engine)
+Base=declarative_base()
+Base.query=db_session.query_property()
+
+def init_db():
+	import models
+	Base.metadata.create_all(engine)
