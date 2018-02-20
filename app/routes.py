@@ -1,10 +1,11 @@
 from flask import render_template, redirect, request, flash, url_for
-from app import blog
+from app import blog, db
 from forms import NewPost
-from app import db
-from db_base import db_session, init_db
+from models import *
 
-init_db()
+Base.metadata.create_all(engine)
+db.session.commit()
+
 
 @blog.route('/')
 @blog.route('/index')
@@ -25,17 +26,18 @@ def stories():
 
 @blog.route('/addnew', methods=['GET','POST'])
 def addNew():
+	page_title="Grace this world with a new post, Sensei"
 	post=NewPost(request.form)
 	if request.method=='POST' and post.validate():
 		print 'Success'
-		blogpost=NewPost()
+		blogpost=Post()
 		save_changes(blogpost, post, isnew=True)
 		return redirect(url_for('index'))
 	else:
 		print 'Fail'
 		flash(post.errors)
 	
-	return render_template('newpost.html', form=post)
+	return render_template('newpost.html', form=post, title=page_title)
 
 
 def save_changes(blogpost, form, isnew=False):
@@ -44,6 +46,6 @@ def save_changes(blogpost, form, isnew=False):
 	blogpost.content=form.content.data
 
 	if isnew:
-		db_session.add(blogpost)
+		db.session.add(blogpost)
 
-	db_session.commit()
+	db.session.commit()

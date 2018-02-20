@@ -8,7 +8,11 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Clean Blog - Start Bootstrap Theme</title>
+    {% if title %}
+    <title>{{ title }}</title>
+    {% else %}
+    <title>Welcome to the Underworld, Sensei</title>
+    {% endif %}
 
     <!-- Bootstrap core CSS -->
     <link href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -67,7 +71,7 @@
       </div>
     </header>
 
-    <hr>
+    <!-- <hr>
         {% with msgs = get_flashed_messages() %}
         {% if msgs %}
         <ul>
@@ -76,7 +80,7 @@
         {% endfor %}
         {% endif %}
         {% endwith %}
-      </ul>
+      </ul> -->
 
    <!--  <div class="container">
       <div class="row">
