@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+   <body>
+   
+      <table border = 1>
+         {% for title in form %}
+         
+            <tr>
+               <th> {{ title }} </th>
+               <td> {{ dict(form.category.choices).get(form.category.data) }} </td>
+               <td> {{ form.content }} </td>
+            </tr>
+            
+         {% endfor %}
+      </table>
+      
+   </body>
+</html>

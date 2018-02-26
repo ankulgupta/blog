@@ -5,11 +5,11 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 
-engine=create_engine('sqlite:///blog_post.db')
-db_session=scoped_session(sessionmaker(autocommit=False,autoflush=False,bind=engine))
+# db.engine=create_engine('sqlite:///blog_post.db')
+# db_session=scoped_session(sessionmaker(autocommit=False,autoflush=False,bind=db.engine))
 
 Base=declarative_base()
-Base.query=db_session.query_property()
+# Base.query=db_session.query_property()
 
 
 class Post(db.Model):

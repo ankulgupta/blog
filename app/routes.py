@@ -3,7 +3,9 @@ from app import blog, db
 from forms import NewPost
 from models import *
 
-Base.metadata.create_all(engine)
+
+Base.metadata.drop_all(db.engine)
+Base.metadata.create_all(db.engine)
 db.session.commit()
 
 
@@ -32,6 +34,7 @@ def addNew():
 		print 'Success'
 		blogpost=Post()
 		save_changes(blogpost, post, isnew=True)
+		# return render_template('postData.html', form=post)
 		return redirect(url_for('index'))
 	else:
 		print 'Fail'
@@ -41,8 +44,9 @@ def addNew():
 
 
 def save_changes(blogpost, form, isnew=False):
+	# blogpost.id=1
 	blogpost.title=form.title.data
-	blogpost.category=form.category.data
+	blogpost.category=dict(form.category.choices).get(form.category.data)
 	blogpost.content=form.content.data
 
 	if isnew:
