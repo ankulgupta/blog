@@ -1,7 +1,7 @@
 from flask import render_template, redirect, request, flash, url_for
 from app import blog, db
 from forms import NewPost
-from models import *
+from models import Base, Post
 
 
 Base.metadata.drop_all(db.engine)
@@ -12,7 +12,8 @@ db.session.commit()
 @blog.route('/')
 @blog.route('/index')
 def index():
-	return render_template('index.html')
+	records = db.session.query(Post).order_by(Post.timestamp.desc()).limit(5).all()
+	return render_template('index.html', records=records)
 
 @blog.route('/about-me')
 def about():

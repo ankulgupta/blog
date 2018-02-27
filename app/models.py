@@ -18,7 +18,7 @@ class Post(db.Model):
 	title=db.Column(db.String(250))
 	category=db.Column(db.String(250))
 	content=db.Column(db.String(65535))
-	timestamp=db.Column(db.DateTime, index=True, default=datetime.utcnow())
+	timestamp=db.Column(db.Date, index=True, default=datetime.now().date())
 
 	def __repr__(self):
 		return '{}: \n{}\n\t -Ankul'.format(self.title, self.content)
