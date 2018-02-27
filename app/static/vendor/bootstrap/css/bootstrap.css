@@ -554,6 +554,7 @@ pre code {
 }
 
 .container {
+  display: inline-block;
   width: 100%;
   padding-right: 15px;
   padding-left: 15px;
@@ -612,6 +613,17 @@ pre code {
 .no-gutters > [class*="col-"] {
   padding-right: 0;
   padding-left: 0;
+}
+
+.col-float {
+  display: block;
+  float: left;
+  width: 100%;
+  height: auto;
+}
+
+.col-float-none {
+  float: none;
 }
 
 .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12, .col,
@@ -1328,6 +1340,7 @@ pre code {
     flex: 0 0 66.666667%;
     max-width: 66.666667%;
   }
+
   .col-lg-9 {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 75%;

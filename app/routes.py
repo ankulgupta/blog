@@ -12,12 +12,16 @@ db.session.commit()
 @blog.route('/')
 @blog.route('/index')
 def index():
+	page_title="My Ideas My Space"
+	page_subtitle="Where I speak in a way I enjoy the most"
 	records = db.session.query(Post).order_by(Post.timestamp.desc()).limit(5).all()
-	return render_template('index.html', records=records)
+	return render_template('index.html', records=records, title=page_title, subheading=page_subtitle)
 
 @blog.route('/about-me')
 def about():
-	return render_template('about.html')
+	page_title="About Me"
+	page_subtitle="Who am I"
+	return render_template('about.html', title=page_title, subtitle=page_subtitle)
 
 @blog.route('/poems')
 def poems():
