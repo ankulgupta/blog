@@ -71,19 +71,21 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-          {% for r in records %}
+          {% for rec in records %}
           <div class="post-preview">
-            <a href="post.html">
+            <!-- <a href=#> -->
+            <a href="{{ url_for('post',record_id=rec.id ) }}">
               <h2 class="post-title">
-                {{ r.title }}
+                {{ rec.title }}
+                {{ rec }}
               </h2>
               <h3 class="post-subtitle">
-                {{ r.content[0:100] }}...
+                {{ rec.content[0:100] }}...
               </h3>
             </a>
             <p class="post-meta">Posted by
               <a href="#">Ankul Gupta</a>
-              {{ r.timestamp }}</p>
+              {{ rec.timestamp }}</p>
           </div><hr>
           {% endfor %}
           <!-- <div class="post-preview">
@@ -127,7 +129,7 @@
           <hr> -->
           <!-- Pager -->
           <div class="clearfix">
-            <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
+            <a class="btn btn-primary float-right" href={{ url_for('poems') }}>More Poems &rarr;</a>
           </div>
         </div>
       </div>

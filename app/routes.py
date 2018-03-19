@@ -27,6 +27,11 @@ def about():
 def poems():
 	return render_template('poems.html')
 
+@blog.route('/post/<int:record_id>')
+def post(record_id):
+	post_obj = get_or_abort(record_id)
+	return render_template('post.html', post_data=post_obj)
+
 @blog.route('/stories')
 def stories():
 	return render_template('stories.html')
@@ -58,3 +63,11 @@ def save_changes(blogpost, form, isnew=False):
 		db.session.add(blogpost)
 
 	db.session.commit()
+
+def get_or_abort(post_id):
+	obj = db.session.query(Post).get(post_id)
+	print("I dont see it")
+	if obj is None:
+		# print("No object found!")
+		abort(404)
+	return obj

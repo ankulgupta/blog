@@ -21,4 +21,5 @@ class Post(db.Model):
 	timestamp=db.Column(db.Date, index=True, default=datetime.now().date())
 
 	def __repr__(self):
-		return '{}: \n{}\n\t -Ankul'.format(self.title, self.content)
+		# return "%s:\n %s\n\t -Ankul" % (self.title, self.content)
+		return ("{}: {} \n\t -Ankul".format( self.title, self.category))
