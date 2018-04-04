@@ -1,6 +1,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
+from flask_uploads import UploadSet, IMAGES, configure_uploads
+from flask_migrate import Migrate
 
 blog = Flask(__name__)
 
@@ -12,5 +14,8 @@ blog.static_folder = 'static'
 # blog.secret_key='notnullkey'
 
 db=SQLAlchemy(blog)
+migrate = Migrate(blog, db)
+images = UploadSet('images', IMAGES)
+configure_uploads(blog, images)
 
 from app import routes

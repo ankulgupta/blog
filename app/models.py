@@ -18,7 +18,16 @@ class Post(db.Model):
 	title=db.Column(db.String(250))
 	category=db.Column(db.String(250))
 	content=db.Column(db.String(65535))
+	image_filename=db.Column(db.String, default=None, nullable=True)
+	image_url=db.Column(db.String, default=None, nullable=True)
 	timestamp=db.Column(db.Date, index=True, default=datetime.now().date())
+
+	def __init__(self, title, category, content, image_filename=None, image_url=None):
+		self.title = title
+		self.category = category
+		self.content = content
+		self.image_url = image_url
+		self.image_filename = image_filename
 
 	def __repr__(self):
 		# return "%s:\n %s\n\t -Ankul" % (self.title, self.content)

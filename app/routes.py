@@ -1,5 +1,5 @@
 from flask import render_template, redirect, request, flash, url_for
-from app import blog, db
+from app import blog, db, images
 from forms import NewPost
 from models import Base, Post
 
@@ -29,6 +29,7 @@ def poems():
 
 @blog.route('/post/<int:record_id>')
 def post(record_id):
+	page_title="My Ideas My Space"
 	post_obj = get_or_abort(record_id)
 	return render_template('post.html', post_data=post_obj)
 
@@ -39,10 +40,16 @@ def stories():
 @blog.route('/addnew', methods=['GET','POST'])
 def addNew():
 	page_title="Grace this world with a new post, Sensei"
-	post=NewPost(request.form)
-	if request.method=='POST' and post.validate():
+	post=NewPost()
+	if request.method=='POST' and post.validate_on_submit():
 		print 'Success'
-		blogpost=Post()
+		if 'post_image' not in request.files:
+			flash('No Files')
+			return 'no file found'
+		filename=images.save(request.files['post_image'])
+		url=images.url(filename)
+		blogpost=Post(post.title.data, post.category.data, post.content.data, filename, url)
+		print 'There'
 		save_changes(blogpost, post, isnew=True)
 		# return render_template('postData.html', form=post)
 		return redirect(url_for('index'))
@@ -61,8 +68,10 @@ def save_changes(blogpost, form, isnew=False):
 
 	if isnew:
 		db.session.add(blogpost)
+		print('Posting data')
 
 	db.session.commit()
+	print("Checkpoint")
 
 def get_or_abort(post_id):
 	obj = db.session.query(Post).get(post_id)

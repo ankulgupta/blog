@@ -93,7 +93,7 @@
     </div> -->
 
     <h1>{{ page_title }}</h1><hr>
-    <form action="" Method="post">
+    <form action="" Method="post" enctype="multipart/form-data">
       {{ form.hidden_tag() }}
     <p>
         {{ form.title.label }}
@@ -115,6 +115,14 @@
        {{ form.content.label }}
         {{ form.content(size=50) }}
         {% for error in form.content.errors %}
+        <span style="color:red">{{ error }}</span>
+        {% endfor %} 
+    </p>
+
+    <p>
+       {{ form.post_image.label }}
+        {{ form.post_image(size=10) }}
+        {% for error in form.post_image.errors %}
         <span style="color:red">{{ error }}</span>
         {% endfor %} 
     </p>
