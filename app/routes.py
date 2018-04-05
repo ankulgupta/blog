@@ -21,11 +21,13 @@ def index():
 def about():
 	page_title="About Me"
 	page_subtitle="Who am I"
-	return render_template('about.html', title=page_title, subtitle=page_subtitle)
+	header = "Ankul Gupta"
+	return render_template('about.html', title=page_title, subtitle=page_subtitle, head_title=header)
 
 @blog.route('/poems')
 def poems():
-	return render_template('poems.html')
+	poems = db.session.query(Post).order_by(Post.timestamp.desc()).filter(Post.category == 'Poem').limit(10).all()
+	return render_template('poems.html', records=poems)
 
 @blog.route('/post/<int:record_id>')
 def post(record_id):
@@ -35,7 +37,8 @@ def post(record_id):
 
 @blog.route('/stories')
 def stories():
-	return render_template('stories.html')
+	stories = db.session.query(Post).order_by(Post.timestamp.desc()).filter(Post.category == 'Story').limit(10).all()
+	return render_template('stories.html', records=stories)
 
 @blog.route('/addnew', methods=['GET','POST'])
 def addNew():

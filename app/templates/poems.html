@@ -3,12 +3,20 @@
 
   <head>
 
+    <style>
+      img {
+          position: absolute;
+          top:0;
+          bottom:0;
+          margin:auto;
+      }
+</style>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{{ head_title }}</title>
+    <title>{{ title }}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -53,29 +61,56 @@
     </nav>
 
     <!-- Page Header -->
-    <header class="masthead" style="background-image: url({{ url_for('static',filename='img/about-background.jpg') }})">
+    <header class="masthead" style="background-image: url({{ url_for('static', filename='img/poems-background.jpg') }})">
       <div class="overlay"></div>
       <div class="container">
         <div class="row">
-          <div class="col-lg-8 col-md-10 mx-auto col-float-none">
-            <div class="page-heading">
-              <h1>{{ title }}</h1>
-              <span class="subheading">{{ subtitle }}</span>
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="post-heading">
+              <h1>Poems</h1>
+              <!-- <h2 class="subheading">Problems look mighty small from 150 miles up</h2> -->
+              <!-- <span class="meta">Posted by <a href="#">Ankul Gupta</a> on </span> -->
             </div>
           </div>
         </div>
       </div>
     </header>
 
-    <!-- Main Content -->
+    <!-- Post Content -->
+
     <div class="container">
-      <div class="row">
+      
+          {% for rec in records %}
+          <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-          <p style='float:right;' >Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-            <img style='float:left; margin-right:8.5px; margin-top:8.5px; width:210px; height:194px' src={{ url_for('static',filename='img/ankulGupta.tiff') }}>Saepe nostrum ullam eveniet pariatur voluptates odit, fuga atque ea nobis sit soluta odio, adipisci quas excepturi maxime quae totam ducimus consectetur? Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-          Eius praesentium recusandae illo eaque architecto error, repellendus iusto reprehenderit, doloribus, minus sunt. Numquam at quae voluptatum in officia voluptas voluptatibus, minus! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut consequuntur magnam, excepturi aliquid ex itaque esse est vero natus quae optio aperiam soluta voluptatibus corporis atque iste neque sit tempora!</p>
+          <div class="post-preview">
+            <!-- <a href=#> -->
+            <a href="{{ url_for('post',record_id=rec.id ) }}">
+              <h2 class="post-title">
+                {{ rec.title }}
+              </h2>
+              <h3 class="post-subtitle">
+                {{ rec.content[0:100] }}...
+              </h3>
+            </a>
+            <p class="post-meta">Posted by
+              <a href="https://www.facebook.com/gupta.ankul">Ankul Gupta</a>
+              {{ rec.timestamp }}</p>
+          </div>
+          <div class="img-responsive">
+          <div class="pull-right">
+            <img src="{{ rec.image_url }}" alt="" height="100" width="120" align="middle">
+          </div>
         </div>
+          <hr>
       </div>
+      </div>
+          {% endfor %}
+          <!-- Pager -->
+          <div class="clearfix">
+            <a class="btn btn-primary float-right" href={{ url_for('poems') }}>More Poems &rarr;</a>
+          </div>
+        
     </div>
 
     <hr>
@@ -86,6 +121,7 @@
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
             <ul class="list-inline text-center">
+          
               <li class="list-inline-item">
                 <a href="https://www.facebook.com/gupta.ankul">
                   <span class="fa-stack fa-lg">
