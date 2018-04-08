@@ -1,8 +1,8 @@
-from flask import render_template, redirect, request, flash, url_for
+from flask import render_template, redirect, request, flash, url_for, abort
 from app import blog, db, images
 from forms import NewPost
 from models import Base, Post
-
+import math
 
 Base.metadata.drop_all(db.engine)
 Base.metadata.create_all(db.engine)
@@ -22,12 +22,30 @@ def about():
 	page_title="About Me"
 	page_subtitle="Who am I"
 	header = "Ankul Gupta"
-	return render_template('about.html', title=page_title, subtitle=page_subtitle, head_title=header)
+	return render_template('about.html', page_title=page_title, page_subtitle=page_subtitle, title=header)
 
-@blog.route('/poems')
-def poems():
-	poems = db.session.query(Post).order_by(Post.timestamp.desc()).filter(Post.category == 'Poem').limit(10).all()
-	return render_template('poems.html', records=poems)
+@blog.route('/poems', defaults={'page':1})
+@blog.route('/poems/<int:page>')
+def poems(page):
+	# poems = db.session.query(Post).order_by(Post.timestamp.desc()).filter(Post.category == 'Poem').limit(10).all()
+	post_count = db.session.query(Post).filter(Post.category=='Poem').count()
+	page_count = (post_count/15) if ((post_count%15)==0) else ((post_count/15)+1)
+
+	if page > page_count:
+		abort(404)
+	poems = db.session.query(Post).filter(Post.id <= post_count-(15*(page-1))).filter(Post.id > post_count-(15*page)).order_by(Post.id.desc())
+	
+	# page_count = math.ceil(float(post_count/15))
+	print("Here post count is")
+	print(post_count-(15*(page-1)))
+	print(post_count-(15*page))
+	page_title = "My Poems"
+	if page == page_count:
+		hasNext = None 
+	else:
+		hasNext = 1
+	print(hasNext)
+	return render_template('poems.html', records=poems, title=page_title, pageNum=(page+1), hasNext=hasNext)
 
 @blog.route('/post/<int:record_id>')
 def post(record_id):
@@ -35,10 +53,22 @@ def post(record_id):
 	post_obj = get_or_abort(record_id)
 	return render_template('post.html', post_data=post_obj)
 
-@blog.route('/stories')
-def stories():
-	stories = db.session.query(Post).order_by(Post.timestamp.desc()).filter(Post.category == 'Story').limit(10).all()
-	return render_template('stories.html', records=stories)
+@blog.route('/stories', defaults={'page':1})
+@blog.route('/stories/<int:page>')
+def stories(page):
+	post_count = db.session.query(Post).filter(Post.category=='Story').count()
+	page_count = (post_count/15) if ((post_count%15)==0) else ((post_count/15)+1)
+
+	if page>page_count:
+		abort(404)
+	# stories = db.session.query(Post).order_by(Post.timestamp.desc()).filter(Post.category == 'Story').limit(10).all()
+	stories = db.session.query(Post).filter(Post.id <= post_count-(15*(page-1))).filter(Post.id > post_count-(15*page)).order_by(Post.id.desc())
+	page_title = "My Stories"
+	if page==page_count:
+		hasNext = None
+	else:
+		hasNext = 1
+	return render_template('stories.html', records=stories, title=page_title, pageNum=(page+1), hasNext=hasNext)
 
 @blog.route('/addnew', methods=['GET','POST'])
 def addNew():

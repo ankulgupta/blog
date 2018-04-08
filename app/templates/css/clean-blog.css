@@ -23,6 +23,11 @@ h6 {
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+.inline-page-list {
+  display: inline;
+  padding: 10px;
+}
+
 a {
   color: #212529;
   -webkit-transition: all 0.2s;

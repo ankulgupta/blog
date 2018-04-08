@@ -34,6 +34,11 @@ a:focus, a:hover {
   color: #0085A1;
 }
 
+.inline-page-list {
+  display: inline;
+  padding: 10px;
+}
+
 blockquote {
   font-style: italic;
   color: #868e96;

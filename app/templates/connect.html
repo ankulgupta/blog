@@ -1,17 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <!-- Navigation -->
-
-    <style>
-      img {
-            position: absolute;
-            top:0;
-            bottom:0;
-            margin:auto;
-        }
-    </style>
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+	
+	<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
         <a class="navbar-brand" href="index.html">Connect</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,62 +29,30 @@
     </nav>
 
     <!-- Page Header -->
-    <header class="masthead" style="background-image: url({{ url_for('static', filename='img/poems-background.jpg') }})">
+    <header class="masthead" style="background-image: url({{ url_for('static',filename='img/about-background.jpg') }})">
       <div class="overlay"></div>
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto col-float-none">
             <div class="page-heading">
-              <h1>Poems</h1>
-              <!-- <h2 class="subheading">Problems look mighty small from 150 miles up</h2> -->
-              <!-- <span class="meta">Posted by <a href="#">Ankul Gupta</a> on </span> -->
+              <h1>{{ page_title }}</h1>
+              <span class="subheading">{{ page_subtitle }}</span>
             </div>
           </div>
         </div>
       </div>
     </header>
 
-    <!-- Post Content -->
-
+    <!-- Main Content -->
     <div class="container">
-      
-          {% for rec in records %}
-          <div class="row">
+      <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-          <div class="post-preview">
-            <!-- <a href=#> -->
-            <a href="{{ url_for('post',record_id=rec.id ) }}">
-              <h2 class="post-title">
-                {{ rec.title }} {{ rec.id }}
-              </h2>
-              <h3 class="post-subtitle wrapword">
-                {{ rec.content[0:100] }}...
-              </h3>
-            </a>
-            <p class="post-meta">Posted by
-              <a href="https://www.facebook.com/gupta.ankul">Ankul Gupta</a>
-              {{ rec.timestamp }}</p>
-          </div>
-          <div class="img-responsive">
-          <div class="pull-right">
-            <img src="{{ rec.image_url }}" alt="" height="100" width="120" align="middle">
-          </div>
+          <p style='float:right ;' >Hi, this is Ankul Gupta. I am a software developer by day and armchair philosopher by night.
+            <img style='float:left !important; margin-right:10px !important; margin-top:8.5px !important; width:210px !important; height:194px !important;' src={{ url_for('static',filename='img/ankulGupta.tiff') }}> Hence all my idle time is spent, deliberating one thing or other. This is a collection of some of my works, which I have written over the years. Besides writing, I follow football religiously. I support Chelsea, John Terry is my idol and therefore I bleed blue. Music is another religion I identify with. Led Zepplin, RHCP, Radiohead, Amit Trivedi and many more. I enjoy playing guitar, singing when I am alone and am also learning to play drums. I wish to be everything at once. If you'd like to find out how I fare, keep an eye on this blog. Warm Wishes!</p>
         </div>
-          <hr>
       </div>
-      </div>
-          {% endfor %}
-          <!-- Pager -->
-
-          {% if hasNext %}
-
-          <div class="clearfix">
-            <a class="btn btn-primary float-right" href={{ url_for('poems', page=pageNum) }}>More Poems &rarr;</a>
-          </div>
-
-          {% endif %}
-        
     </div>
+
     <hr>
 
     <!-- Footer -->
@@ -102,7 +61,6 @@
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
             <ul class="list-inline text-center">
-          
               <li class="list-inline-item">
                 <a href="https://www.facebook.com/gupta.ankul">
                   <span class="fa-stack fa-lg">
@@ -125,5 +83,4 @@
         </div>
       </div>
     </footer>
-
 {% endblock %}

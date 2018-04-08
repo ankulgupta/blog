@@ -1,30 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-  <head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>{{ head_title }}</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-
-    <!-- Custom fonts for this template -->
-    <link href="{{ url_for('static', filename='vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
-    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-
-    <!-- Custom styles for this template -->
-    <link href="{{ url_for('static', filename='css/clean-blog.min.css') }}" rel="stylesheet">
-
-  </head>
-
-  <body>
-
+ {% block content %} 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
@@ -59,8 +35,8 @@
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto col-float-none">
             <div class="page-heading">
-              <h1>{{ title }}</h1>
-              <span class="subheading">{{ subtitle }}</span>
+              <h1>{{ page_title }}</h1>
+              <span class="subheading">{{ page_subtitle }}</span>
             </div>
           </div>
         </div>
@@ -71,9 +47,8 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-          <p style='float:right;' >Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-            <img style='float:left; margin-right:8.5px; margin-top:8.5px; width:210px; height:194px' src={{ url_for('static',filename='img/ankulGupta.tiff') }}>Saepe nostrum ullam eveniet pariatur voluptates odit, fuga atque ea nobis sit soluta odio, adipisci quas excepturi maxime quae totam ducimus consectetur? Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-          Eius praesentium recusandae illo eaque architecto error, repellendus iusto reprehenderit, doloribus, minus sunt. Numquam at quae voluptatum in officia voluptas voluptatibus, minus! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut consequuntur magnam, excepturi aliquid ex itaque esse est vero natus quae optio aperiam soluta voluptatibus corporis atque iste neque sit tempora!</p>
+          <p style='float:right ;' >Hi, this is Ankul Gupta. I am a software developer by day and armchair philosopher by night.
+            <img style='float:left !important; margin-right:10px !important; margin-top:8.5px !important; width:210px !important; height:194px !important;' src={{ url_for('static',filename='img/ankulGupta.tiff') }}> Hence all my idle time is spent, deliberating one thing or other. This is a collection of some of my works, which I have written over the years. Besides writing, I follow football religiously. I support Chelsea, John Terry is my idol and therefore I bleed blue. Music is another religion I identify with. Led Zepplin, RHCP, Radiohead, Amit Trivedi and many more. I enjoy playing guitar, singing when I am alone and am also learning to play drums. I wish to be everything at once. If you'd like to find out how I fare, keep an eye on this blog. Warm Wishes!</p>
         </div>
       </div>
     </div>
@@ -109,13 +84,4 @@
       </div>
     </footer>
 
-    <!-- Bootstrap core JavaScript -->
-    <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
-    <!-- Custom scripts for this template -->
-    <script src="{{ url_for('static', filename='js/clean-blog.min.js') }}"></script>
-
-  </body>
-
-</html>
+    {% endblock %}

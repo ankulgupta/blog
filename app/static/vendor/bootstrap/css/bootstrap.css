@@ -122,6 +122,11 @@ dt {
   font-weight: 700;
 }
 
+ul li {
+  display:inline;
+  padding:10x;
+}
+
 dd {
   margin-bottom: .5rem;
   margin-left: 0;

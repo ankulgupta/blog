@@ -3,14 +3,6 @@
 
   <head>
 
-<style>
-      img {
-          position: absolute;
-          top:0;
-          bottom:0;
-          margin:auto;
-      }
-</style>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -28,8 +20,31 @@
 
     <!-- Custom styles for this template -->
     <link href="{{ url_for('static',filename='css/clean-blog.min.css') }}" rel="stylesheet">
+    <style>
+      img {
+          position: absolute;
+          top:0;
+          bottom:0;
+          margin:auto;
+      }
 
-  </head>
+      body{
+        background-color: #FFFDF8 !important;
+      }
+
+      .wrapword {
+          white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+          white-space: -pre-wrap;      /* Opera 4-6 */
+          white-space: -o-pre-wrap;    /* Opera 7 */
+          white-space: pre-wrap;       /* css-3 */
+          word-wrap: break-word;       /* Internet Explorer 5.5+ */
+          white-space: -webkit-pre-wrap; /* Newer versions of Chrome/Safari*/
+          word-break: break-all;
+          white-space: normal;
+      }
+
+    </style>
+    </head>
 
   <body>
 
@@ -87,7 +102,7 @@
               <h2 class="post-title">
                 {{ rec.title }}
               </h2>
-              <h3 class="post-subtitle">
+              <h3 class="post-subtitle wrapword">
                 {{ rec.content[0:100] }}...
               </h3>
             </a>
@@ -110,8 +125,6 @@
           </div>
         
     </div>
-
-    <hr>
 
     <hr>
 
