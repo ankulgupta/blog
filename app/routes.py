@@ -1,11 +1,15 @@
 from flask import render_template, redirect, request, flash, url_for, abort
 from app import blog, db, images
-from forms import NewPost
-from models import Base, Post
+from forms import NewPost, LoginForm, RegistrationForm
+from app.models import Base, Post, User, ACCESS
+from flask_login import current_user, login_user, logout_user, login_required
+from werkzeug.urls import url_parse
 import math
 
 Base.metadata.drop_all(db.engine)
 Base.metadata.create_all(db.engine)
+# Post.__table__.create(db.engine)
+# User.__table__.create(db.engine)
 db.session.commit()
 
 
@@ -34,17 +38,12 @@ def poems(page):
 	if page > page_count:
 		abort(404)
 	poems = db.session.query(Post).filter(Post.id <= post_count-(15*(page-1))).filter(Post.id > post_count-(15*page)).order_by(Post.id.desc())
-	
-	# page_count = math.ceil(float(post_count/15))
-	print("Here post count is")
-	print(post_count-(15*(page-1)))
-	print(post_count-(15*page))
+
 	page_title = "My Poems"
 	if page == page_count:
 		hasNext = None 
 	else:
 		hasNext = 1
-	print(hasNext)
 	return render_template('poems.html', records=poems, title=page_title, pageNum=(page+1), hasNext=hasNext)
 
 @blog.route('/post/<int:record_id>')
@@ -71,44 +70,75 @@ def stories(page):
 	return render_template('stories.html', records=stories, title=page_title, pageNum=(page+1), hasNext=hasNext)
 
 @blog.route('/addnew', methods=['GET','POST'])
+@login_required
 def addNew():
 	page_title="Grace this world with a new post, Sensei"
 	post=NewPost()
 	if request.method=='POST' and post.validate_on_submit():
-		print 'Success'
 		if 'post_image' not in request.files:
 			flash('No Files')
 			return 'no file found'
 		filename=images.save(request.files['post_image'])
 		url=images.url(filename)
 		blogpost=Post(post.title.data, post.category.data, post.content.data, filename, url)
-		print 'There'
 		save_changes(blogpost, post, isnew=True)
 		# return render_template('postData.html', form=post)
 		return redirect(url_for('index'))
 	else:
-		print 'Fail'
 		flash(post.errors)
 	
 	return render_template('newpost.html', form=post, title=page_title)
 
+@blog.route('/login', methods=['GET', 'POST'])
+def login():
+	if current_user.is_authenticated and current_user.is_admin:
+		return redirect(url_for('addnew'))
+	form = LoginForm()
+	if form.validate_on_submit():
+		user = User.query.filter_by(email=form.email.data).first()
+
+		if user is None or not user.check_password(form.password.data):
+			flash('Invalid username or password')
+			return redirect(url_for('index'))
+		login_user(user, remember=form.remember_me.data)
+		if user.is_admin:
+			redirect(url_for('addnew'))
+	# 	next_page = request.args.get('next')
+        # if not next_page or url_parse(next_page).netloc != '':
+        #     next_page = url_for('index')
+        # return redirect(next_page)
+	return render_template('login.html', title="Sign In", form=form, page_heading="Sign In")
+
+@blog.route('/register', methods=['GET', 'POST'])
+def register():
+	if current_user.is_authenticated and current_user.is_admin:
+		return redirect(url_for('addnew'))
+	form = RegistrationForm()
+	if form.validate_on_submit():
+		user = User(email=form.email.data, access=1)
+		user.set_password(form.password.data)
+		db.session.add(user)
+		db.session.commit()
+		flash('Registered')
+		redirect(url_for('login'))
+	# 	next_page = request.args.get('next')
+        # if not next_page or url_parse(next_page).netloc != '':
+        #     next_page = url_for('index')
+        # return redirect(next_page)
+	return render_template('register.html', title="Register", form=form, page_heading="New User Registration")
 
 def save_changes(blogpost, form, isnew=False):
-	# blogpost.id=1
 	blogpost.title=form.title.data
 	blogpost.category=dict(form.category.choices).get(form.category.data)
 	blogpost.content=form.content.data
 
 	if isnew:
 		db.session.add(blogpost)
-		print('Posting data')
 
 	db.session.commit()
-	print("Checkpoint")
 
 def get_or_abort(post_id):
 	obj = db.session.query(Post).get(post_id)
-	print("I dont see it")
 	if obj is None:
 		# print("No object found!")
 		abort(404)

@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from config import Config
 from flask_uploads import UploadSet, IMAGES, configure_uploads
 from flask_migrate import Migrate
+from flask_login import LoginManager
 
 blog = Flask(__name__)
 
@@ -14,8 +15,11 @@ blog.static_folder = 'static'
 # blog.secret_key='notnullkey'
 
 db=SQLAlchemy(blog)
+db.session.commit()
 migrate = Migrate(blog, db)
 images = UploadSet('images', IMAGES)
 configure_uploads(blog, images)
+login = LoginManager(blog)
+login.login_view = 'login'
 
-from app import routes
+from app import routes, models

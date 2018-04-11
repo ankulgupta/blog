@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
+
 {% block content %}
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
-        <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+        <a class="navbar-brand" href="index.html">Connect</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           Menu
           <i class="fa fa-bars"></i>
@@ -13,16 +13,16 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="index.html">Home</a>
+              <a class="nav-link" href={{ url_for('index') }}>Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="about.html">About</a>
+              <a class="nav-link" href={{ url_for('about') }}>About</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="post.html">Sample Post</a>
+              <a class="nav-link" href={{ url_for('poems') }}>Poems</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="contact.html">Contact</a>
+              <a class="nav-link" href={{ url_for('stories') }}>Stories</a>
             </li>
           </ul>
         </div>
@@ -30,75 +30,80 @@
     </nav>
 
     <!-- Page Header -->
-    <header class="masthead" style="background-image: url('img/about-bg.jpg')">
+    <header class="masthead" style="background-image: url({{ url_for('static', filename='img/stories-background.jpg') }})">
       <div class="overlay"></div>
       <div class="container">
         <div class="row">
-          <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="col-lg-8 col-md-10 mx-auto col-float-none">
             <div class="page-heading">
-              <h1>About Me</h1>
-              <span class="subheading">This is what I do.</span>
+              <h1>{{ page_heading }}</h1>
+              <!-- <h2 class="subheading">Problems look mighty small from 150 miles up</h2> -->
+              <!-- <span class="meta">Posted by <a href="#">Ankul Gupta</a> on </span> -->
             </div>
           </div>
         </div>
       </div>
     </header>
-
-    <h1>{{ page_title }}</h1><hr>
     <form action="" Method="post" enctype="multipart/form-data">
+	<!-- <div class="container"> -->
+
       {{ form.hidden_tag() }}
-    <p>
-        {{ form.title.label }}
-        {{ form.title(size=50) }}
-        {% for error in form.title.errors %}
+
+<div class="row"
+      <p>
+      	<div class="col-lg-2 mx-auto"></div>
+      	<div class="col-lg-1 mx-auto pull-right">
+        {{ form.email.label }}
+    </div>
+        <div class="col-lg-9 mx-auto">
+        {{ form.email(size=40) }}
+    </div>
+        {% for error in form.email.errors %}
         <span style="color:red">{{ error }}</span>
         {% endfor %}
     </p>
 
     <p>
-       {{ form.category.label }}
-        {{ form.category(size=1) }}
-        {% for error in form.category.errors %}
+    	<div class="col-lg-2 mx-auto"></div>
+    	<div class="col-lg-1 mx-auto">
+       {{ form.password.label }}
+   </div>
+             <div class="col-lg-9 mx-auto">
+        {{ form.password(size=40) }}
+    </div>
+        {% for error in form.password.errors %}
         <span style="color:red">{{ error }}</span>
         {% endfor %} 
     </p>
 
     <p>
-       {{ form.content.label }}
-        {{ form.content(size=50) }}
-        {% for error in form.content.errors %}
+      <div class="col-lg-2 mx-auto"></div>
+      <div class="col-lg-1 mx-auto">
+       {{ form.password2.label }}
+   </div>
+             <div class="col-lg-9 mx-auto">
+        {{ form.password2(size=40) }}
+    </div>
+        {% for error in form.password2.errors %}
         <span style="color:red">{{ error }}</span>
         {% endfor %} 
     </p>
-
-    <p>
-       {{ form.post_image.label }}
-        {{ form.post_image(size=10) }}
-        {% for error in form.post_image.errors %}
-        <span style="color:red">{{ error }}</span>
-        {% endfor %} 
-    </p>
-
-    {{ form.submit }}
-
+</div>
+<div class="col-lg-2 mx-auto"></div>
+<div class="col-lg-1 mx-auto"></div>
+<div class="col-lg-9 mx-auto">
+   {{ form.submit }}
 </form>
+</div>
 
-    <!-- Footer -->
-    <footer>
+   <footer>
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
             <ul class="list-inline text-center">
+    
               <li class="list-inline-item">
-                <a href="#">
-                  <span class="fa-stack fa-lg">
-                    <i class="fa fa-circle fa-stack-2x"></i>
-                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                  </span>
-                </a>
-              </li>
-              <li class="list-inline-item">
-                <a href="#">
+                <a href="https://www.facebook.com/gupta.ankul">
                   <span class="fa-stack fa-lg">
                     <i class="fa fa-circle fa-stack-2x"></i>
                     <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
@@ -106,7 +111,7 @@
                 </a>
               </li>
               <li class="list-inline-item">
-                <a href="#">
+                <a href="https://github.com/ankulgupta">
                   <span class="fa-stack fa-lg">
                     <i class="fa fa-circle fa-stack-2x"></i>
                     <i class="fa fa-github fa-stack-1x fa-inverse"></i>
@@ -119,4 +124,5 @@
         </div>
       </div>
     </footer>
+
 {% endblock %}
