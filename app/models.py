@@ -20,7 +20,7 @@ ACCESS = {
 
 class User(UserMixin, db.Model):
 	__tablename__='users'
-	user_id = db.Column(db.Integer, primary_key=True)
+	id = db.Column(db.Integer, primary_key=True)
 	email = db.Column(db.String(20), unique=True)
 	password_hash = db.Column(db.String(250))
 	access= db.Column(db.Integer)
@@ -39,6 +39,8 @@ class User(UserMixin, db.Model):
 		return check_password_hash(self.password_hash, password)
 
 	def is_admin(self):
+		print(self.access)
+		print(ACCESS['admin'])
 		return self.access == ACCESS['admin']
 
 @login.user_loader

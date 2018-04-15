@@ -72,47 +72,46 @@ def stories(page):
 @blog.route('/addnew', methods=['GET','POST'])
 @login_required
 def addNew():
-	page_title="Grace this world with a new post, Sensei"
-	post=NewPost()
-	if request.method=='POST' and post.validate_on_submit():
-		if 'post_image' not in request.files:
-			flash('No Files')
-			return 'no file found'
-		filename=images.save(request.files['post_image'])
-		url=images.url(filename)
-		blogpost=Post(post.title.data, post.category.data, post.content.data, filename, url)
-		save_changes(blogpost, post, isnew=True)
-		# return render_template('postData.html', form=post)
-		return redirect(url_for('index'))
+	if current_user.is_admin:
+		page_title="Grace this world with a new post, Sensei"
+		post=NewPost()
+		if request.method=='POST' and post.validate_on_submit():
+			if 'post_image' not in request.files:
+				flash('No Files')
+				return 'no file found'
+			filename=images.save(request.files['post_image'])
+			url=images.url(filename)
+			blogpost=Post(post.title.data, post.category.data, post.content.data, filename, url)
+			save_changes(blogpost, post, isnew=True)
+			# return render_template('postData.html', form=post)
+			return redirect(url_for('index'))
+		else:
+			flash(post.errors)
+		
+		return render_template('newpost.html', form=post, title=page_title)
 	else:
-		flash(post.errors)
-	
-	return render_template('newpost.html', form=post, title=page_title)
+		abort(404)
 
 @blog.route('/login', methods=['GET', 'POST'])
 def login():
-	if current_user.is_authenticated and current_user.is_admin:
+	if current_user.is_authenticated and current_user.is_admin():
 		return redirect(url_for('addnew'))
 	form = LoginForm()
 	if form.validate_on_submit():
 		user = User.query.filter_by(email=form.email.data).first()
-
 		if user is None or not user.check_password(form.password.data):
 			flash('Invalid username or password')
 			return redirect(url_for('index'))
-		login_user(user, remember=form.remember_me.data)
-		if user.is_admin:
-			redirect(url_for('addnew'))
-	# 	next_page = request.args.get('next')
-        # if not next_page or url_parse(next_page).netloc != '':
-        #     next_page = url_for('index')
-        # return redirect(next_page)
+		login_user(user)
+		if user.is_admin():
+			redirect(url_for('addNew'))
+
 	return render_template('login.html', title="Sign In", form=form, page_heading="Sign In")
 
 @blog.route('/register', methods=['GET', 'POST'])
 def register():
-	if current_user.is_authenticated and current_user.is_admin:
-		return redirect(url_for('addnew'))
+	if current_user.is_authenticated and current_user.is_admin():
+		return redirect(url_for('addNew'))
 	form = RegistrationForm()
 	if form.validate_on_submit():
 		user = User(email=form.email.data, access=1)
@@ -121,10 +120,7 @@ def register():
 		db.session.commit()
 		flash('Registered')
 		redirect(url_for('login'))
-	# 	next_page = request.args.get('next')
-        # if not next_page or url_parse(next_page).netloc != '':
-        #     next_page = url_for('index')
-        # return redirect(next_page)
+
 	return render_template('register.html', title="Register", form=form, page_heading="New User Registration")
 
 def save_changes(blogpost, form, isnew=False):
