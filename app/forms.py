@@ -3,7 +3,7 @@ from wtforms import StringField, SelectField, SubmitField, TextAreaField, Passwo
 from wtforms.validators import DataRequired, Email, EqualTo
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 from app import images
-from models import User
+from app.models import User
 
 class NewPost(FlaskForm):
 	title = StringField('Title')

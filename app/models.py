@@ -5,7 +5,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from config import Config
+from app.config import Config
 
 # db.engine=create_engine('sqlite:///' + os.path.join(basedir, 'posts.db')
 # db_session = scoped_session(sessionmaker(autocommit=False,autoflush=False,bind=db.engine))

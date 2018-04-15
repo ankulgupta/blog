@@ -1,6 +1,6 @@
 from flask import render_template, redirect, request, flash, url_for, abort
 from app import blog, db, images
-from forms import NewPost, LoginForm, RegistrationForm
+from app.forms import NewPost, LoginForm, RegistrationForm
 from app.models import Base, Post, User, ACCESS
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
